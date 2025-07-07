@@ -1,0 +1,1161 @@
+DML 
+ 
+1.Return the name and commission for each seller. 
+
+	SELECT name, commision
+FROM salesman
+
+2.Return the name and city of every seller who lives in Paris.
+
+SELECT name, city
+FROM salesman
+WHERE city = ‘Paris’
+
+3. To show all information about 200 rated buyers.
+
+SELECT *
+FROM customer
+WHERE grade = 200
+
+4. To show all information about buyers with a rating greater than 100.
+
+SELECT *
+FROM customer
+WHERE grade > 100
+
+5. To display all information for buyers from New York and a rating greater than 100.
+
+SELECT *
+FROM customer
+WHERE city = ‘New York’
+AND grade > 100
+
+6. To display all information for buyers from New York or a rating greater than 100.
+
+SELECT *
+FROM customer
+WHERE city = ‘New York’
+OR grade > 100
+
+7. To display all information for buyers from New York or they do not have a rating greater than 100.
+
+SELECT *
+FROM customer
+WHERE city = ‘New York’
+OR NOT grade > 100
+
+8. To display all information about buyers who are neither from New York nor have a rating greater than 100.
+
+SELECT *
+FROM customer
+WHERE NOT (city = ‘New York’ OR grade > 100)
+
+9. Return all orders except the orders that were issued on 2012-09-10 and were issued by a seller whose ID is greater than 5005, or the order amount is greater than 1000.
+
+SELECT *
+FROM orders
+WHERE NOT((ord_date = ‘2012-09-10’ AND salesman_id > 5005)
+OR purch_amt > 1000)
+
+10.Return all information about sellers coming from either Paris or Rome.
+
+SELECT *
+FROM salesman
+WHERE city = ‘Paris’ OR city = ‘Rome’
+
+11. To write an expression that will filter only the sellers who come from either Paris or Rome.
+
+SELECT *
+FROM salesman
+WHERE city IN (‘Paris’,’Rome’)
+
+12.Return all information for sellers coming from a city other than Paris and Rome.
+
+SELECT *
+FROM salesman
+WHERE city NOT IN (‘Paris’,’Rome’)
+ 	or equivalent of 
+SELECT *
+FROM salesman
+WHERE NOT city IN (‘Paris’,’Rome’)
+
+13.Return all information for buyers whose ID is 3007 or 3008 or 3009.
+
+SELECT *
+FROM customer
+WHERE customer_id IN (3007,3008,3009)
+
+14.Return the code, name, city and commission of sellers who have a commission greater than 0.10 and less than 0.12.
+
+SELECT salesman_id, name, city, commission
+FROM salesman
+WHERE (commission > 0.10 AND commission < 0.12)
+
+15.Return all information about sellers who have a commission in the interval between 0.12 and 0.14.
+
+SELECT *
+FROM salesman
+WHERE commission BETWEEN (0.12 AND 0.14)
+
+16.Return all information for orders whose amount is in the range between 500 and 4000, except those orders for which the amount is 948.50 or 1983.43.
+
+SELECT *
+FROM orders
+WHERE (purch_amt BETWEEN 500 AND 4000)
+AND NOT purch_amt IN (948.50,1983.43)
+
+17.Return all information for sellers whose name starts with any letter between 'A' and 'K'.
+
+SELECT *
+FROM salesman
+WHERE name BETWEEN ‘A’ AND ‘L’
+
+18.Return all information for sellers whose name starts with a letter not between 'A' and 'K'.
+
+SELECT *
+FROM salesman
+WHERE name NOT BETWEEN ‘A’ AND ‘L’
+19. Return all information for buyers whose name starts with the letter 'B'.
+
+SELECT *
+FROM customer
+WHERE cust_name LIKE ‘B%’
+
+20. Return all information for buyers whose name ends with the letter 'n'.
+
+SELECT *
+FROM customer
+WHERE cust_name LIKE ‘%n’
+
+21. Return all information for buyers whose name starts with the letter 'N' and the fourth letter is 'l'.
+
+SELECT *
+FROM customer
+WHERE cust_name LIKE ‘N__l%’
+
+22. Return all the rows from the testtable table that contain '_' in the col1 column.
+
+SELECT *
+FROM testtable
+WHERE col1 LIKE ‘%/_%’ ESCAPE ‘/’
+
+23.Return all rows from the testtable table that do not contain '_' in col1 column.
+
+SELECT *
+FROM testtable
+WHERE col1 NOT LIKE ‘%/_%’ ESCAPE ‘/’
+
+24. Return all the rows from the testtable table that contain '/' in the column col1.
+
+SELECT *
+FROM testtable
+WHERE col1 LIKE ‘%//%’ ESCAPE ‘/’
+
+25.Return all rows from the testtable table that do not contain '/' in col1 column.
+
+SELECT *
+FROM testtable
+WHERE col1 NOT LIKE ‘%//%’ ESCAPE ‘/’
+
+26. Return all rows from the testtable table that contain '_/' in col1 column.
+
+SELECT *
+FROM testtable
+WHERE col1 LIKE ‘%/_//%’ ESCAPE ‘/’
+
+27. Return all rows from the testtable table that do not contain '_/' in col1 column.
+
+SELECT *
+FROM testtable
+WHERE col1 NOT LIKE ‘%/_//%’ ESCAPE ‘/’
+
+28. Return all the rows from the testtable table that contain '%' in the column col1.
+
+SELECT *
+FROM testtable
+WHERE col1 NOT LIKE ‘%/%%’ ESCAPE ‘/’
+
+29.Return all information for buyers who do not have a rating.
+
+SELECT *
+FROM customer
+WHERE grade IS NULL
+
+30.Return all information about buyers who have a rating.
+
+SELECT *
+FROM customer
+WHERE grade IS NOT NULL
+	or equivalent of
+SELECT *
+FROM customer
+WHERE NOT grade IS NULL
+
+31. To return the order code, order amount, achieved and unachieved percentage for those orders that exceed 50% of the target value (target value is 6000).
+
+SELECT ord_no, purch_amt,
+(100*purch_amt)/6000 AS “Achieved %”,
+(100*(6000-purch_amt)/6000) AS “Unachieved %”
+FROM orders
+WHER (100*purch_amt)/6000 > 50
+
+32.Return all the different vendor codes that have received an order from the buyers.
+
+SELECT DISTICNT salesman_id
+FROM orders
+
+33. Return the total amount of all orders.
+
+SELECT SUM (purch_amt)
+FROM orders
+
+34. Return the average amount of all orders.
+
+SELECT AVG (purch_amt)
+FROM orders
+
+35. To return how many orders were made on August 17, 2012.
+
+SELECT COUNT(*)
+FROM orders
+WHERE ord_date=’2012-08-17’
+
+36. To return the number of sellers where the city is specified.
+
+	SELECT COUNT (*)
+	FROM salesman
+	WHERE city IS NOT NULL
+
+37. Return the number of sellers who have placed an order.
+
+	SELECT COUNT (DISTINCT salesman_id)
+	FROM orders
+
+38. Return the number of buyers.
+
+	SELECT (*)
+	FROM customer
+
+39.Return the number of buyers who have received a grade for their performance (grade other than NULL).
+
+	SELECT COUNT (ALL grade)
+	FROM customer
+ALL - with duplicates (default) => only COUNT(grade) is possible
+DISTINCT - no duplicates
+
+40. Return the maximum amount of all orders (the amount of the most expensive order).
+
+	SELECT MAX(purch_amt)
+	FROM orders
+
+41. Return the minimum amount of all orders (the amount of the cheapest order).
+
+	SELECT MIN(purch_amt)
+	FROM orders
+
+42. To return the city and the highest rating for each of the cities of the buyers.
+
+	SELECT city,MAX(grade)
+	FROM customer
+	GROUP BY city
+
+43. For each buyer to return the highest amount of his orders (the amount of his most expensive order).
+
+	SELECT customer_id, MAX(purch_amt)
+	FROM orders
+	GROUP BY customer_id
+
+
+44. For each buyer to return the highest amount of his
+orders separately for each date.
+
+	SELECT customer_id, ord_date,SUM(purch_amt)
+	FROM orders
+	GROUP BY customer_id, ord_date
+
+45. For each seller to return the highest amount of the orders which
+he made them on 2012-08-17.
+
+	SELECT salesman_id, MAX(purch_amt)
+	FROM orders
+	WHERE ord_date=’2012-08-17’
+	GROUP BY salesman_id
+
+46. ​​For each buyer to return the highest amount of his orders separately for each date, taking into account only those 
+buyers for whom the highest amount on that date is greater than 2000.
+
+	SELECT customer_id, ord_date, MAX(purch_amt)
+	FROM orders
+	GROUP BY customer_id, ord_date
+	HAVING MAX(purch_amt) > 2000
+
+47. For each buyer to return the highest amount of his orders separately for each date, taking into account only those
+buyers for whom the highest amount on that date is between 2000 and 6000.
+
+	SELECT customer_id, ord_date, MAX(purch_amt)
+	FROM orders
+	GROUP BY customer_id, ord_date
+	HAVING MAX(purch_amt) BETWEEN 2000 AND 6000
+
+48. For each buyer to return the highest amount of his orders separately for each date, taking into account only those
+buyers for whom the highest amount on that date is in the list 2000, 3000, 5760 and 6000.
+
+	SELECT customer_id, ord_date, MAX(purch_amt)
+	FROM orders
+	GROUP BY customer_id, ord_date
+	HAVING MAX(purch_amt) IN (2000, 3000, 5760, 6000)
+
+49. For each buyer to return the highest amount of his orders, taking into account only buyers whose code is between
+3002 and 3007.
+
+	SELECT customer_id, MAX(purch_amt)
+	FROM orders
+	WHERE customer_id BETWEEN 3002 AND 3007
+	GROUP BY customer_id
+
+50. For each buyer to return the highest amount of his orders, taking into account only buyers whose code is between
+3002 and 3007 and for which the highest order amount is greater than 1000.
+
+SELECT customer_id, MAX(purch_amt)
+	FROM orders
+	WHERE customer_id BETWEEN 3002 AND 3007
+	GROUP BY customer_id
+	HAVING MAX(purch_amt) > 1000
+
+51. For each seller to return the highest amount of the orders that he made, taking into account only the sellers whose code is between 5003 and 5008.
+
+	SELECT salesman_id,MAX(purch_amt)
+	FROM orders
+	GROUP BY salesman_id
+	HAVING salesman_id BETWEEN 5003 AND 5008
+
+52. For each seller to return the number of orders he has made separately for each date.
+
+	SELECT salesman_id, ord_date, COUNT(*)
+	FROM orders
+	GROUP BY salesman_id, ord_date
+
+53. For each seller to return the code, name, city and commission expressed in % in the following format:
+<code> <name> <city> % <commission>
+
+SELECT salesman_id, name, city, ‘%’, commission*100
+FROM salesman
+
+54. For each date to return the number of orders that were made on the given date in the format:
+For <datum> there are <kolku_naracki> orders.
+
+SELECT ‘For’, ord_date, ‘there are’, COUNT (DISTICNT ord_no), ‘orders.’
+FROM orders
+GROUP BY ord_date
+
+55. To display all data about orders sorted by order code in ascending order.
+
+	SELECT *
+	FROM orders
+	ORDER BY ord_no
+
+56. To display all order data sorted by order date, with newer orders coming before older orders. (in descending order)
+
+	SELECT *
+	FROM orders
+	ORDER BY ord_date DESC
+
+57. To display all the data on the orders sorted according to the date and amount of the order, whereby the more
+expensive orders will be before the cheaper orders of the same day.
+
+	SELECT *
+	FROM orders
+	ORDER BY ord_date, purch_amt DESC
+
+58. To display the names and ratings of buyers sorted by their code starting from the smallest code.
+
+	SELECT customer_id, grade
+	FROM customer
+	ORDER BY customer_id
+
+59. For each seller to return the highest amount of the orders they have made separately for each date sorted 
+by seller code and order date, with the lowest code being the first along with the lowest date.
+
+	SELECT salesman_id, ord_date, MAX(purch_amt)
+	FROM orders
+	GROUP BY salesman_id, ord_date
+	ORDER BY salesman_id, ord_date
+
+60. To display the names, cities and ratings of buyers sorted by rating so that the buyer with the highest rating will be first.
+
+	SELECT cust_name, city, grade
+	FROM customer
+	ORDER BY 3 DESC
+
+61. For each buyer, display the code, the number of different orders and the amount of the most expensive order of 
+that buyer sorted in descending order by number of orders and maximum amount.
+
+	SELECT customer_id, COUNT(DISTINCT ord_no), MAX(purch_amt)
+	FROM orders
+	GROUP BY customer_id
+	ORDER BY 2, 3 DESC
+
+62. To return the date, the total amount and the total commission (15% for each seller) separately for each date when 
+the order was made, sorted by date (the last date when the order was made should be returned at the end in the result).
+
+	SELECT ord_date, SUM(purch_amt), SUM(purch_amt)*.15
+	FROM orders
+	GROUP BY ord_date
+	ORDER BY ord_date
+
+63. To write an SQL expression that will return the full name (first and last name) and the salary of employees who earn less than 6000.
+
+	SELECT first_name ||' '||last_name AS Full_Name, salary
+FROM employees 
+WHERE salary < 6000
+
+64. To write an SQL expression that will return the full name (first and last name) and the salary of employees 
+who have a salary outside the range 7000 and 15000 and the result will be sorted in ascending order according to the full name.
+
+	SELECT first_name || ' ' || last_name as Name, salary
+FROM employees
+WHERE salary NOT BETWEEN 7000 AND 15000
+ORDER BY first_name || ' ' || last_name
+
+65.Return the names of buyers and the names of sellers along with the city, which are considered to live in the same city.
+	
+	SELECT customer.cust_name, salesman.name, salesman.city
+	FROM salesman, customer
+	WHERE salesman.city = customer.city
+
+66.Return the names of the buyers along with the names of the sellers who work for them.
+
+	SELECT customer.cust_name, salesman.name
+	FROM customer, salesman
+	WHERE salesman.salesman_id = customer.salesman_id
+
+67. Return the data (order code, buyer name, buyer code and seller code) for all orders for which the buyer and seller are from different cities.
+
+	SELECT ord_no, cust_name, orders.customer_id, orders.salesman.id
+FROM salesman, customer, orders
+WHERE customer.city <> salesman.city
+AND orders.customer_id = customer.customer_id
+AND orders.salesman_id = salesman.salesman_id
+
+68. Return the order codes together with the name of the buyer who made the corresponding order. 
+
+	SELECT orders.ord_no, customer.cust_name
+	FROM orders, customer
+	WHERE orders.customer_id = customer.customer_id
+
+69.Return the name of the buyer and its rating for orders from rated buyers that are made by a seller belonging to a city.
+	
+	SELECT customer.cust_name AS “Customer”, customer.grade AS “Grade” 
+	FROM orders, salesman, customer
+	WHERE orders.customer_id = customer.customer_id
+	AND salesman.city IS NOT NULL
+	AND customer.grade IS NOT NULL
+
+70.Return the buyer's name, city, seller's name, and seller's commission for buyers charged to a seller whose commission is in the range between 12% and 14%.
+
+	SELECT customer.cust_name AS “Customer”,
+		      customer.city AS “City”,
+      salesman.name AS “Salesman”,	
+      salesman.commission
+FROM customer, salesman
+WHERE customer.salesman_id = salesman.salesman_id
+AND salesman.commission BETWEEN .12 AND .14
+
+71.Return order codes, buyer name, commission, and commission earned (amount*commission) for orders from buyers that have a rating greater than or equal to 200.
+
+	SELECT ord_no, cust_name, commission AS “Commission %”, purch_amt*commission AS “Commission”
+	FROM salesman, orders, customer
+	WHERE orders.customer_id = customer.customer_id
+	AND orders.salesman_id = salesman.salesman_id
+	AND customer.grade >= 200
+
+72. Restore all customer data and orders that were made on October 5, 2012.
+
+	SELECT *
+	FROM customer a, orders b
+	WHERE a.customer_id = b.customer_id
+	AND b.ord_date = ‘2012-10-05’
+
+73.Return all information about orders made by seller(s) 'Paul Adam'.
+
+	SELECT *
+	FROM orders
+	WHERE salseman_id = 
+		(SELECT salesman_id
+		 FROM salesman
+		 WHERE name= ‘Paul Adam’)
+
+74.Return all order information made by London seller(s).
+
+	SELECT *
+	FROM orders
+	WHERE salseman_id = 
+		(SELECT salesman_id
+		 FROM salesman
+		 WHERE city = ‘London’)
+
+75. Return all information about orders made by a seller with a code equal to the code of the seller who made the order / made the orders for the buyer with code 3007.
+
+SELECT *
+	FROM orders
+	WHERE salseman_id = 
+		(SELECT salesman_id
+		 FROM orders
+		 WHERE customer_id = 3007)
+
+76. Return all information about orders whose amount is greater than the average amount of orders made on October 10, 2012.
+
+	SELECT *
+	FROM orders
+	WHERE purch_amt > 
+		(SELECT AVG(purch_amt)
+		 FROM orders
+		 WHERE ord_date = ‘2012-10-10’) 
+
+77. Retrieve all information about orders made by a seller from New York.
+	
+	SELECT *
+	FROM orders
+	WHERE salesman_id IN 
+		(SELECT salesman_id
+		 FROM salesman
+		 WHERE city = ‘New York’)
+
+78. Refund commissions for sellers serving buyers from Paris.
+
+	SELECT commission
+	FROM salesman
+	WHERE salesman_id IN 
+		(SELECT salesman_id
+		 FROM customer
+		 WHERE city = ‘Paris’)
+
+79.Return all information for buyers whose code is for 2001 less than the code of the seller(s) named Mc Lyon.
+
+	SELECT * 
+	FROM customer
+	WHERE customer_id IN 
+		(SELECT salesman_id - 2001
+		 FROM salesman
+		 WHERE name = ‘Mc Lyon’)
+
+80.Return the number of buyers along with ratings for all ratings greater than the average New York buyer rating.
+
+	SELECT grade, COUNT(*)
+	FROM customer
+	GROUP BY grade
+	HAVING grade >
+		(SELECT AVG (grade)
+		 FROM customer
+		 WHERE city = ’New York’)
+
+81. Return the information about the orders made by the seller who has the highest commission.
+
+	SELECT ord_no, purch_amt, ord_date, salesman_id
+	FROM orders
+	WHERE salesman_id IN 
+		(SELECT salesman_id
+		 FROM salesman
+		 WHERE commission = 
+			(SELECT MAX (commission)
+			 FROM salesman))
+
+82.Return the names of sellers who have more than one buyer.
+This can be solved with GROUP BY and HAVING.
+
+	SELECT salesman_id, name 
+	FROM salesman a
+	WHERE 1 < 
+		(SELECT COUNT (*)
+		 FROM customer
+		 WHERE salesman_id = a.salesman_id)
+
+83. Return all information about orders whose amount is greater than the average amount of all orders from their buyer (the buyer from whom the order was made).
+
+	SELECT *
+	FROM orders a 
+	WHERE purch_amt > 
+		(SELECT AVG(purch_amt)
+		 FROM orders b
+		 WHERE b.customer_id = a.customer_id)
+
+84. Return all information about orders whose amount is greater than or equal to the average amount of all orders from their buyer (the buyer from whom the order was placed).
+	
+	SELECT * 
+	FROM orders a
+	WHERE purch_amt >=
+		(SELECT AVG(purch_amt)
+		 FROM orders b
+		 WHERE b.customer_id = a.customer_id)
+
+85. For each date to return the total amount of all orders made on the given date, taking into 
+account only the dates for which it is valid that the total amount of all orders on that date is greater than 
+the maximum amount for that date increased by 1000.
+
+	SELECT ord_date, SUM (purch_amt)
+	FROM orders a
+	GROUP BY ord_date
+	HAVING SUM(purch_amt) >
+		(SELECT 1000+MAX(purch_amt)
+		 FROM orders b
+		 WHERE a.ord_date = b.ord_date)
+
+86.Return the buyer information if and only if there is at least one buyer from London.
+
+	SELECT customer_id, cust_name, city, 
+	FROM customer
+	WHERE EXISTS 
+		(SELECT * 
+ FROM customer
+		 WHERE city = ‘London’)
+
+87.Return information about sellers who have multiple buyers.
+
+	SELECT * 
+	FROM salesman
+	WHERE salesman_id IN 
+		(SELECT salesman_id 
+		 FROM customer a 
+		 WHERE EXISTS 
+			(SELECT * FROM customer b
+			 WHERE b.salesman_id = a.salesman_id 
+			 AND b.cust_name <> a.cust_name))
+
+88.Return information about sellers who work for only one (exactly one) buyer.
+
+	SELECT * 
+	FROM salesman
+	WHERE salesman_id IN 
+		(SELECT salesman_id 
+		 FROM customer a 
+		 WHERE NOT EXISTS 
+			(SELECT * FROM customer b
+			 WHERE b.salesman_id = a.salesman_id 
+			 AND b.cust_name <> a.cust_name))
+
+89.Return all information about sellers who have a buyer who has more than one order.
+
+	SELECT * FROM salesman a
+WHERE EXISTS
+(SELECT * FROM customer b
+ WHERE a.salesman_id=b.salesman_id AND 1<
+(SELECT COUNT (*) FROM orders
+ WHERE orders.customer_id = b.customer_id))
+
+90.Return all information about sellers whose name in alphabetical order precedes the name of at least one buyer.
+
+	SELECT *
+	FROM salesman a
+	WHERE EXISTS 
+		(SELECT *
+		 FROM customer b
+		 WHERE a.name < b.cust_name)
+
+91.Return all information about sellers who are from a city where there is at least one buyer.
+
+	SELECT *
+	FROM salesman
+	WHERE city IN
+		(SELECT city
+		 FROM customer )
+
+92.Return all information about buyers whose rating is greater than at least one of the New York buyer ratings.
+
+	SELECT *
+	FROM customer
+	WHERE grade > ANY 
+		(SELECT grade
+		 FROM customer
+		 WHERE city = ‘New York’)
+
+93. Return all information about orders whose amount is greater than the amount of at least one order made on September 10, 2012.
+
+	SELECT * 
+	FROM orders
+	WHERE purch_amt > ANY 
+		(SELECT purc_amt 
+		 FROM orders
+		 WHERE ord_date = ‘2012-09-10’)
+
+94.Return all information about orders whose amount is less than any order amount of a London buyer.
+
+	SELECT *
+	FROM orders
+	WHERE purch_amt < ANY
+		(SELECT purch_amt
+		 FROM orders a, orders b
+		 WHERE a.customer_id = b.customer_id
+		 AND b.city = ‘London’)
+
+95.Return all information about orders whose amount is less than the maximum order amount of buyers from London.
+
+	SELECT *
+	FROM orders
+	WHERE purch_amt < 
+		(SELECT MAX(purch_amt)
+		 FROM orders a, orders b
+		 WHERE a.customer_id = b.customer_id
+		 AND b.city = ‘London’)
+
+96.Return information about buyers whose ratings are greater than the ratings of all New York buyers.
+
+	SELECT *
+	FROM customer
+	WHERE grade > ALL
+		(SELECT grade 
+		 FROM customer
+		 WHERE city = ‘New York’)
+
+97.Return the information for buyers whose ratings are different from the ratings of London buyers.
+	SELECT * 
+	FROM customer 
+	WHERE grade <> ALL 
+		(SELECT grade
+		 FROM customer
+		 WHERE city = ‘London’ AND grade IS NOT NULL)
+
+98.Return the information for buyers whose ratings are different from the ratings of Paris buyers.
+
+	SELECT *
+	FROM customer
+	WHERE grade NOT IN 
+		(SELECT grade 
+		 FROM customer
+		 WHERE city = ‘Paris’)
+
+99.Return the information for buyers whose ratings are different from the ratings of Dallas buyers.
+
+	SELECT *
+	FROM customer
+	WHERE NOT grade = ANY 
+		(SELECT grade 
+		 FROM customer
+		 WHERE city = ‘Dallas’)
+
+100. For each seller, return the name, city, total amount of all orders, where the seller should have the same city as at least one buyer.
+
+	SELECT salesman.name , salesman.city,
+subquery1.total_amt FROM salesman,
+	(SELECT salesman_id, SUM (orders.purch_amt) AS total_amt
+	 FROM orders
+	 GROUP BY salesman_id) subquery1
+	 WHERE subquery1.salesman_id = salesman.salesman_id
+	AND salesman.city IN 
+		(SELECT DISTINCT city
+		 FROM customer)
+
+
+101.Return the information (code and name) for all sellers and buyers from London.
+
+SELECT salesman_id "ID", name, 'Salesman' 
+FROM salesman 
+WHERE city='London’
+UNION
+(SELECT customer_id "ID", cust_name, 'Customer' 
+FROM customer 
+WHERE city='London’)
+
+102.Return all vendor codes along with their cities.
+
+	SELECT salesman_id, city 
+FROM customer
+UNION 
+(SELECT salesman_id, city 
+ FROM salesman)
+
+103.Restore all seller and buyer codes.
+
+	SELECT salesman_id, customer_id 
+FROM customer
+UNION 
+(SELECT salesman_id, customer_id 
+ FROM orders)
+
+104. For each date, return the code of the seller who made the most expensive and cheapest order on that date.
+
+SELECT a.salesman_id, name, ord_no, 'highest on', ord_date
+FROM salesman a, orders b 
+WHERE a.salesman_id =b.salesman_id 
+AND b.purch_amt=
+(SELECT MAX (purch_amt) FROM orders c
+ WHERE c.ord_date = b.ord_date)
+UNION
+(SELECT a.salesman_id, name, ord_no, 'lowest on', ord_date
+FROM salesman a, orders b 
+WHERE a.salesman_id =b.salesman_id 
+AND b.purch_amt=
+(SELECT MIN (purch_amt) FROM orders c
+ WHERE c.ord_date = b.ord_date)
+)
+
+105. For each date, return the code of the seller who made the most expensive and cheapest order on that date, and the orders will be sorted according to the code.
+
+	SELECT a.salesman_id, name, ord_no, 'highest on', ord_date
+FROM salesman a, orders b WHERE a.salesman_id =b.salesman_id AND b.purch_amt=
+(SELECT MAX (purch_amt) FROM orders c
+ WHERE c.ord_date = b.ord_date)
+UNION
+(SELECT a.salesman_id, name, ord_no, 'lowest on', ord_date
+ FROM salesman a, orders b WHERE a.salesman_id =b.salesman_id AND b.purch_amt=
+(SELECT MIN (purch_amt) FROM orders c
+ WHERE c.ord_date = b.ord_date)
+) ORDER BY 3
+
+106.Return information about sellers who do not have a buyer from the same city, as well as those who have a buyer from the same city.
+
+	SELECT salesman.salesman_id, name, cust_name, commission
+FROM salesman, customer WHERE salesman.city = customer.city
+UNION
+(SELECT salesman_id, name, 'NO MATCH', commission
+FROM salesman WHERE NOT city = ANY 
+(SELECT city FROM customer))
+ORDER BY 2 DESC
+
+107. To write an expression that adds a string that shows whether or not there is a buyer from the same city.
+
+	SELECT a.salesman_id, name, a.city, 'MATCHED’
+FROM salesman a, customer b WHERE a.city = b.city
+UNION
+(SELECT salesman_id, name, city, 'NO MATCH’
+FROM salesman WHERE NOT city = ANY
+ (SELECT city FROM customer)
+)
+ORDER BY 2 DESC
+
+108.Return the names, cities and ratings of all buyers, whereby High Rating will be added for those who have a rating greater than or equal to 300, and Low Rating for the rest.
+
+	SELECT customer_id, city, grade, 'High Rating' 
+FROM customer 
+WHERE grade >= 300
+UNION
+SELECT customer_id, city, grade, 'Low Rating' 
+FROM customer 
+WHERE grade < 300
+
+109.Return the codes and names of all sellers and buyers who have more than one current order. Sort the results alphabetically by name.
+
+	SELECT customer_id, cust_name
+FROM customer a
+WHERE 1< 
+(SELECT COUNT (*) FROM orders b WHERE a.customer_id =   b.customer_id)
+UNION
+(SELECT salesman_id, name
+FROM salesman a
+WHERE 1 < 
+(SELECT COUNT (*) FROM orders b WHERE a.salesman_id = b.salesman_id)
+)
+ORDER BY 2
+
+110. To create a view that contains all information about sellers from New York.
+
+	CREATE VIEW newyorkstaff AS
+SELECT *
+FROM salesman 
+WHERE city = 'New York’
+
+111. To create a view that contains all the information about sellers from New York who have a commission greater than 13%.
+
+	CREATE VIEW newyorkstaff13 AS
+SELECT * 
+FROM salesman 
+WHERE city = 'New York’ 
+AND commission > 0.13
+
+112. To create a view containing the code, name and city
+to all sellers.
+
+	CREATE VIEW salesown AS
+SELECT salesman_id, name, city 
+FROM salesman;
+
+113. To create a view that contains the number of buyers with each of the possible grades.
+
+	CREATE VIEW gradecount (grade, number) AS
+SELECT grade, COUNT(*) 
+FROM customer 
+GROUP BY grade
+
+114. To create a view that contains the number of buyers, the average and the total amount separately for each date.
+
+	CREATE VIEW totalforday AS
+SELECT ord_date, COUNT(DISTINCT customer_id), AVG(purch_amt), SUM(purch_amt)
+FROM orders
+GROUP BY ord_date
+
+115. To create a view that will show the information about the name of the seller and the buyer for each order.
+
+	CREATE VIEW nameorders AS
+SELECT ord_no, purch_amt, a.salesman_id, name, cust_name
+FROM orders a, customer b, salesman c
+WHERE a.customer_id = b.customer_id 
+AND a.salesman_id = c.salesman_id
+
+116. To create a view that contains all the information about the buyers with the highest rating.
+
+	CREATE VIEW highgrade AS
+SELECT * 
+FROM customer
+WHERE grade = 
+(SELECT MAX (grade) 
+ FROM customer)
+
+117. To create a view that contains information about the code of the seller who made the most expensive order of the day.
+
+	CREATE VIEW elitsalesman AS
+SELECT b.ord_date, a.salesman_id, a.name FROM salesman a, orders b
+WHERE a.salesman_id = b.salesman_id AND b.purch_amt =
+(SELECT MAX (purch_amt) 
+ FROM orders c 
+ WHERE c.ord_date = b.ord_date)
+
+118. To create a view that contains the codes and names of the sellers who made the most expensive order of the day on at least three dates.
+
+	CREATE VIEW incentive AS
+SELECT DISTINCT salesman_id, name 
+FROM elitsalesman a WHERE 3 <=
+(SELECT COUNT (*) 
+ FROM elite salesman b 
+ WHERE a.salesman_id = b.salesman_id)
+
+119. To create a view that contains the number of sellers in each city.
+
+	CREATE VIEW citynum AS
+SELECT city, COUNT(salesman_id) 
+FROM salesman 
+GROUP BY city
+
+120. To create a view that contains information about the names of the sellers along with the average and total amount of the orders they made.
+
+	CREATE VIEW norders AS
+SELECT name, AVG(purch_amt), SUM(purch_amt)
+FROM salesman, orders
+WHERE salesman.salesman_id = orders.salesman_id 
+GROUP BY name
+
+121. To create a view that contains the sellers who have more than one buyer.
+
+	CREATE VIEW mcustomer AS
+SELECT * 
+FROM salesman a 
+WHERE 1 <
+(SELECT COUNT(*) 
+ FROM customer b 
+ WHERE a.salesman_id = b.salesman_id);
+
+122. To create a view that contains the cities of buyers and their sellers.
+
+	CREATE VIEW citymatch (custcity, salescity) AS
+SELECT DISTINCT a.city, b.city
+FROM customer a, salesman b 
+WHERE a.salesman_id = b.salesman_id
+
+123. To create a view that contains the number of orders separately for each date.
+	CREATE VIEW dateord (ord_date, odcount) AS
+SELECT ord_date, COUNT(*) 
+FROM orders 
+GROUP BY ord_date
+
+124. To create a view that contains all the information about the sellers who made an order on October 10, 2012.
+
+	CREATE VIEW salesmanonoct AS
+SELECT * 
+FROM salesman 
+WHERE salesman_id IN
+(SELECT salesman_id 
+FROM orders 
+WHERE ord_date = '2012-10-10')
+
+125. To create a view that contains all the information about the sellers who made an order on August 17, 2012 or October 10, 2012.
+
+	CREATE VIEW sorder AS
+SELECT salesman_id, ord_no, customer_id 
+FROM orders
+WHERE ord_date IN ('2012-08-17', '2012-10-10')
+
+126.Return the names of sellers and buyers along with the city name, which are considered to be from the same city.
+
+	SELECT salesman.name AS “Salesman”
+	customer.cust_name, customer.city
+	FROM salesman, customer
+	WHERE salesman.city = customer.city
+
+127.Return the order codes, order amount, customer name and customer city for those orders whose amount is between 500 and 2000.
+
+	SELECT a.ord_no, a.purch_amt, b.cust_name, b.city
+	FROM orders a, customer b
+	WHERE a.customer_id = b.customer_id
+	AND a.purch_amt BETWEEN 500 AND 2000
+
+128. To return information about which seller works for each of the buyers (to return the name and city of the buyer and the name and commission of the seller).
+
+	SELECT a.cust_name AS “Customer Name”,
+a.city, b.name AS “Salesman”, b.commission
+FROM customer a
+INNER JOIN salesman b
+ON a.salesman_id = b.salesman_id
+
+129.Return the information about the buyers who work for sellers who have a commission greater than 12%.
+
+	SELECT a.cust_name AS “Customer Name”,
+a.city, b.name AS “Salesman”, b.commission
+FROM customer a
+INNER JOIN salesman b
+ON a.salesman_id = b.salesman_id
+WHERE b.commission > .12
+
+130.Return the information about the buyers who work for sellers who do not live in the same city and who have a commission greater than 12%.
+
+	SELECT a.cust_name AS “Customer Name”,
+a.city, b.name AS “Salesman”, b.commission
+FROM customer a
+INNER JOIN salesman b
+ON a.salesman_id = b.salesman_id
+WHERE b.commission > .12
+	AND a.city <> b.city
+
+131. Return the information for all orders (code, date, amount, buyer's name, name and commission of the seller who made the order).
+
+	SELECT a.ord_no, a.ord_date, a.purch_amt, 
+b.cust_name AS “Customer Name”, b.grade, 
+c.name AS “Salesman”, c.commission
+FROM orders a
+INNER JOIN customer b
+ON a.customer_id = b.customer_id
+INNER JOIN salesman c
+ON a.salesman_id = c.salesman_id
+
+132. To write an SQL expression that will merge the salesman, customer and orders tables in such a way that the columns with the same name will be there only once and only the connected tuples will be returned.
+
+	SELECT * 
+	FROM orders
+	NATURAL JOIN customer
+	NATURAL JOIN salesman
+
+133. To return a list with the names and cities of buyers who work through their own seller or work alone, sorted in ascending order by the code of the buyer.
+	SELECT a.cust_name, a.city, a.grade, b.name AS “Salesman”, b.city 
+	FROM customer a
+	LEFT JOIN salesman b
+	ON a.salesman_id = b.salesman_id
+	ORDER BY a.salesman_id
+
+134.To return a list of the names and cities of buyers who have a rating of less than 300 and 
+who work through their own seller or work alone, sorted in ascending order by buyer code.
+
+	SELECT a.cust_name, a.city, a.grade, b.name AS “Salesman”, b.city 
+	FROM customer a
+	LEFT OUTER JOIN salesman b
+	ON a.salesman_id = b.salesman_id
+	WHERE a.grade < 300
+	ORDER BY a.salesman_id
+
+135.Return the customer's name and city, order code, date, and amount sorted in ascending 
+order by order date, to see if any of the existing customers have not placed an order or have placed more than one order.
+
+	SELECT a.cust_name, a.city, b.ord_no, b.ord_date, 
+b.purch_amt AS “Order Amount
+FROM customer a
+LEFT OUTER JOIN orders b
+ON a.customer_id = b.customer_id
+ORDER BY b.ord_date
+
+136. To write an SQL expression that will return a report with the name and city of 
+the buyer, code, date and amount of the order, name and commission of the seller, in order to 
+determine whether any of the existing buyers has not placed an order, or has placed an order through a seller or has made it himself.
+
+	SELECT a.cust_name, a.city, b.ord_no, b.ord_date, 
+b.purch_amt AS “Order Amount, c.name, c.commission
+FROM customer a
+LEFT OUTER JOIN orders b
+ON  a.customer_id = b.customer_id
+LEFT OUTER JOIN salesman c
+ON a.salesman_id = c.salesman_id
+
+137. To return a list with information about the name and city of the sellers together 
+with the name of the buyers, which can be used to determine whether a given seller works for 
+one or more buyers or does not yet work for any buyer. The list is sorted by seller code.
+
+	SELECT a.cust_name, a.city, a.grade, b.name AS “Salesman”, b.city 
+	FROM customer a
+	RIGHT OUTER JOIN salesman b
+	ON a.salesman_id = b.salesman_id
+	ORDER BY b.salesman_id
+
+138. To write an SQL expression that will return a list of all sellers who work for one or more buyers or who do not yet have any buyers, and who have made orders.
+
+	SELECT a.cust_name, a.city, a.grade, 
+	b.name AS “Salesman”, 
+	c.ord_no, c.ord_date, c.purch_amt
+	FROM customer a
+	RIGHT OUTER JOIN salesman b
+	ON a.salesman_id = b.salesman_id
+	RIGHT OUTER JOIN orders c
+	ON a.customer_id = a.customer_id
+
+139. To write an SQL expression that will return a list of all sellers who work for one or 
+more buyers or do not yet have a single buyer. The buyer may have placed one or more orders where 
+the order amount must be greater than 2000 and the buyer must have a rating, or there may not be any orders.
+
+	SELECT a.cust_name, a.city, a.grade, 
+	b.name AS “Salesman”, 
+	c.ord_no, c.ord_date, c.purch_amt
+	FROM customer a
+	RIGHT OUTER JOIN salesman b
+	ON a.salesman_id = b.salesman_id
+	LEFT OUTER JOIN orders c
+	ON a.customer_id = a.customer_id
+	WHERE c.purch_amt>=2000
+	AND a.grade IS NOT NULL
+
+140. To write an SQL expression that will return a report on the name and city of the buyers,
+the code, the date and the amount of the order, regardless of whether the buyer has placed an order,
+and regardless of whether the order is from existing buyers or is from a buyer who is not in the list of buyers.
+
+	SELECT a.cust_name, a.city, b.ord_no, 
+	b.ord_date, b.purch_amt AS “Order Amount”
+	FROM customer a
+	FULL OUTER JOIN orders b
+	ON a.customer_id = b.customer_id
+
+141. To write an SQL expression that will return a report on the name and city of the buyer,
+the code, the date and the amount of the order for those orders whose buyers have a rating and have
+made orders or were made by a buyer who is not in the list of buyers.
+
+	SELECT a.cust_name, a.city, b.ord_no, 
+	b.ord_date, b.purch_amt AS “Order Amount”
+	FROM customer a
+	FULL OUTER JOIN orders b
+	ON a.customer_id = b.customer_id
+	WHERE a.grade IS NOT NULL
+
+142. To write an SQL expression that will make a Cartesian product between sellers and buyers so that each seller will be paired with each buyer and vice versa.
+
+	SELECT *
+	FROM salesman a
+	CROSS JOIN customer b
+
+143. To write an SQL expression that will create a Cartesian product between sellers and buyers so 
+that each seller will be paired with each buyer and vice versa. To consider only the vendors for whom the city is guarded.
+
+	SELECT *
+	FROM salesman a
+	CROSS JOIN customer b
+	WHERE a.city IS NOT NULL
+
+144. To write an SQL expression that will make a Cartesian product between sellers and buyers so that each 
+seller will be paired with each buyer and vice versa. Only vendors that are city-protected and have a rating should be considered.
+
+	SELECT *
+	FROM salesman a
+	CROSS JOIN customer b
+	WHERE a.city IS NOT NULL
+	AND b.grade IS NOT NULL
+
+145. To write an SQL expression that will make a Cartesian product between sellers and buyers so that 
+each seller will be paired with each buyer and vice versa. Consider only sellers whose city is stored and which is different from the buyer's city, and the buyer has a rating.
+
+SELECT *
+	FROM salesman a
+	CROSS JOIN customer b
+	WHERE a.city IS NOT NULL
+	AND b.grade IS NOT NULL
+	AND a.city <> b.city
