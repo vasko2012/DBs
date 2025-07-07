@@ -1,0 +1,87 @@
+DML Triggers
+
+1. To write a TR_manager_update trigger that will be activated before the change of the head of someone 
+from another department, and through which the code of the new manager will be set for all employees from that department.
+
+	CREATE TRIGGER TR_manager_update
+	BEFORE UPDATE OF boss ON DEPARTMENT
+	FOR EACH ROW
+	WHEN NEW.boss IS NOT NULL
+	BEGIN
+		UPDATE EMPLOYEE
+		SET EMPLOYEE.manager = NEW.boss
+		WHERE EMPLOYEE.dptID = OLD.dptID
+	END;
+
+2. To write a trigger that will monitor the location attribute in the DEPARTMENT table, that is, before changing its value, the new value should be made up of capital letters only.
+
+	CREATE TRIGGER TR_uppercase_location
+	BEFORE UPDATE OF location ON DEPARTMENT
+	FOR EACH ROW
+	WHEN NEW.location IS NOT NULL
+	BEGIN
+		SET NEW.location = upper(NEW.location)
+	END;
+
+3. Write the appropriate triggers to maintain the value of totalSalary at
+	a. inserting new employee tuples
+	b. salary change of existing employees
+	c. redistribution of existing employees from one department to another
+	d. deleting employee tuples
+	
+a.
+	CREATE TRIGGER totalSalary_insert
+	BEFORE INSERT ON EMPLOYEE
+	FOR EACH ROW
+	WHEN NEW.dptID IS NOT NULL
+	BEGIN
+		UPDATE DEPARTMENT
+		SET totalSalary = totalSalary + NEW.salary
+		WHERE dptID = NEW.dptID
+	END;
+
+b.
+	CREATE TRIGGER totalSalary_update1
+	BEFORE UPDATE OF salary ON EMPLOYEE
+	FOR EACH ROW
+	WHEN OLD.deptID = NEW.deptID
+	BEGIN
+		UPDATE DEPARTMENT
+		SET totalSalary = totalSalary + NEW.salary - OLD.salary
+		WHERE dptID = NEW.dptID
+	END;
+
+c.
+	CREATE TRIGGER totalSalary_update2
+	BEFORE UPDATE OF dptID ON EMPLOYEE
+	FOR EACH ROW
+	WHEN NEW.deptID IS NOT NULL
+	BEGIN
+		UPDATE DEPARTMENT
+		SET totalSalary = totalSalary - OLD.salary
+		WHERE deptID = OLD.deptID
+		UPDATE DEPARTMENT
+		SET totalSalary  = totalSalary + NEW.salary
+		WHERE deptID = NEW.deptID
+	END;
+
+d.
+	CREATE TRIGGER totalSalary_delete
+	BEFORE DELETE ON EMPLOYEE
+	FOR EACH ROW
+	BEGIN
+UPDATE DEPARTMENT
+SET totalSalary = totalSalary - OLD.salary
+WHERE deptID = OLD.deptID 
+	END;
+
+3. To write a trigger that will maintain the referential integrity of the database, which will 
+perform a cascade deletion of all information related to the suits that are deleted from the database.
+
+	CREATE TRIGGER cascade_delete
+	AFTER DELETE ON DEPARTMENT
+	FOR EACH ROW
+	BEGIN
+DELETE FROM EMPLOYEE
+WHERE deptID = OLD.deptID 
+	END;
